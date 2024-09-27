@@ -7,6 +7,7 @@ use App\Enums\CountryPhoneEnum;
 use App\Models\Guest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
+use Override;
 
 class CreateGuestRequest extends FormRequest
 {
@@ -43,5 +44,17 @@ class CreateGuestRequest extends FormRequest
             ],
             'country' => ['nullable', Rule::enum(CountryEnum::class)],
         ];
+    }
+
+    #[Override]
+    public function validated($key = null, $default = null): array
+    {
+        $body = parent::validated();
+
+        if (!isset($body['country'])) {
+            $body['country'] = CountryPhoneEnum::fromPhone($body['phone'])->getCode();
+        }
+
+        return $body;
     }
 }

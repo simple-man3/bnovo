@@ -16,7 +16,13 @@
 ## Api
 
 Список апи:
-- 
+- POST api/v1/guest
+- GET api/v1/guest/123
+- PATCH api/v1/guest/123
+- DELETE api/v1/guest/123
+
+апи POST api/v1/guest принимает тело запроса и возвращает респонс ответ
+
 
 Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
 

@@ -14,7 +14,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property string $last_name - Фамилия
  * @property string $email - Почта
  * @property string $phone - Телефон
- * @property CountryEnum $country - Страна
+ * @property CountryEnum $country - Код страны
  * @property CarbonInterface $created_at - Дата и время создания записи
  * @property CarbonInterface $updated_at - Дата и время изменения записи
  */

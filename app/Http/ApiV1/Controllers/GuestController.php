@@ -17,7 +17,6 @@ class GuestController
 
     public function create(CreateGuestRequest $request, GuestService $service): GuestResource
     {
-        dd('create');
         $model = $service->fillFromRequest($request->validated());
 
         return new GuestResource($service->create($model));
