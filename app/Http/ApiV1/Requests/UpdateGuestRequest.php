@@ -12,6 +12,10 @@ class UpdateGuestRequest extends FormRequest
 {
     public function rules(): array
     {
+        /**
+         * toDo
+         *  [] добавить кастомные валидаторы для телефона и для почты
+         */
         return [
             'first_name' => [],
             'last_name' => [],

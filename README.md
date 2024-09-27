@@ -1,81 +1,154 @@
 ## Локальный запуск
 
-Список действий:
-- Необходимо сказать зависимости composer
-- Создать файл .env и прописать данные для подключения к бд
-- - DB_CONNECTION=mysql
-  - DB_HOST=mysql
-  - DB_PORT=3306
-  - DB_DATABASE=bnovo
-  - DB_USERNAME=sail
-  - DB_PASSWORD=password
-- Для запуска контейнеров, необходимо запустить команду: ./vendor/bin/sail up -d
-- Для выключения контейнеров, необходимо запустить команду: ./vendor/bin/sail down
-- доменное имя сервиса: localhost
+```sh
+composer i
+cp .env.example .env
+php artisan key:generate
+```
 
-## Api
+Необходимо прописать параметры в .env файле
 
-Список апи:
-- POST api/v1/guest
-- GET api/v1/guest/123
-- PATCH api/v1/guest/123
-- DELETE api/v1/guest/123
+| Атрибут       | Значение |
+|---------------|----------|
+| DB_CONNECTION | mysql    |
+| DB_HOST       | mysql    |
+| DB_PORT       | 3306     |
+| DB_DATABASE   | bnovo    |
+| DB_USERNAME   | sail     |
+| DB_PASSWORD   | password |
 
-апи POST api/v1/guest принимает тело запроса и возвращает респонс ответ
+Чтобы запустить контейнеры сервиса
+```sh
+./vendor/bin/sail up -d
+```
 
+Чтобы остановить сервис
+```sh
+./vendor/bin/sail down
+```
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+Доменное имя сервиса: [localhost][domain]
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Убедиться, что сервис работает: [localhost/up][domain-heal]
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+На данный момент обслуживаются только 3 номера стран:
 
-## Learning Laravel
+- Россия: +7
+- США: +1
+- Британия: +44
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+## Список апи
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+| Api               | Метод  | Описание         |
+|-------------------|--------|------------------|
+| api/v1/guest/{id} | GET    | Получение записи |
+| api/v1/guest      | POST   | Создание         |
+| api/v1/guest      | PATCH  | Редактирование   |
+| api/v1/guest      | DELETE | Удаление         |
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Описание апи
 
-## Laravel Sponsors
+### GET api/v1/guest/{id}
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+Параметр id это идентификатор записи из таблицы guests
 
-### Premium Partners
+Ответ
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+```sh
+{
+    "data": {
+        "id": 5,
+        "first_name": "text",
+        "last_name": "asa",
+        "email": "custoMqs@gmail.com",
+        "phone": "+442012345678",
+        "country": "uk",
+        "created_at": "2024-09-27T20:34:07.000000Z",
+        "updated_at": "2024-09-27T20:34:07.000000Z"
+    }
+}
+```
 
-## Contributing
+### POST api/v1/guest
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+Тело запроса
 
-## Code of Conduct
+| Параметр   | Обязателен | Перечисление   |
+|------------|------------|----------------|
+| first_name | да         | -              |
+| last_name  | да         | -              |
+| email      | да         | -              |
+| phone      | да         | -              |
+| country    | нет        | ru, usa, uk    |
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+Пример
 
-## Security Vulnerabilities
+```sh
+{
+    "first_name": "firstName",
+    "last_name": "lastName",
+    "email": "example@gmail.com",
+    "phone": "+442012345678",
+    "country": "uk"
+}
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+Ответ
 
-## License
+```sh
+{
+    "data": {
+        "id": 5,
+        "first_name": "text",
+        "last_name": "asa",
+        "email": "custoMqs@gmail.com",
+        "phone": "+442012345678",
+        "country": "uk",
+        "created_at": "2024-09-27T20:34:07.000000Z",
+        "updated_at": "2024-09-27T20:34:07.000000Z"
+    }
+}
+```
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+### PATCH api/v1/guest/{id}
+
+Тело запроса
+
+| Параметр   | Обязателен | Перечисление   |
+|------------|------------|----------------|
+| first_name | нет        | -              |
+| last_name  | нет        | -              |
+| email      | нет        | -              |
+| phone      | нет        | -              |
+| country    | нет        | ru, usa, uk    |
+
+Пример
+
+```sh
+{
+    "first_name": "firstName",
+    "last_name": "lastName",
+    "email": "example@gmail.com",
+    "phone": "+442012345678"
+}
+```
+
+Ответ
+
+```sh
+{
+    "data": {
+        "id": 5,
+        "first_name": "text",
+        "last_name": "asa",
+        "email": "custoMqs@gmail.com",
+        "phone": "+442012345678",
+        "country": "uk",
+        "created_at": "2024-09-27T20:34:07.000000Z",
+        "updated_at": "2024-09-27T20:34:07.000000Z"
+    }
+}
+```
+
+[domain]: <http:localhost>
+[domain-heal]: <http:localhost/up>

@@ -22,7 +22,7 @@ final class GuestService
 
     public function findById(int $id): Guest
     {
-        return Guest::query()->where('id', $id)->first();
+        return Guest::query()->findOrFail($id);
     }
 
     public function update(Guest $guest, int $id): void

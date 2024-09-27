@@ -11,6 +11,8 @@ use Override;
 
 class CreateGuestRequest extends FormRequest
 {
+    private string $countryCode;
+
     public function rules(): array
     {
         return [
@@ -40,6 +42,8 @@ class CreateGuestRequest extends FormRequest
                     if (!preg_match($countryPhone->getRegEx(), $value)) {
                         return $fail('incorrect phone number');
                     }
+
+                    $this->countryCode = $countryPhone->getCode()->value;
                 }
             ],
             'country' => ['nullable', Rule::enum(CountryEnum::class)],
@@ -51,7 +55,7 @@ class CreateGuestRequest extends FormRequest
     {
         $body = parent::validated();
 
-        if (!isset($body['country'])) {
+        if (!isset($body['country']) || $this->countryCode !== $body['country']) {
             $body['country'] = CountryPhoneEnum::fromPhone($body['phone'])->getCode();
         }
 
