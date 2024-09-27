@@ -8,15 +8,14 @@ use App\Models\Guest;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
-class CreateGuestRequest extends FormRequest
+class UpdateGuestRequest extends FormRequest
 {
     public function rules(): array
     {
         return [
-            'first_name' => ['required'],
-            'last_name' => ['required'],
+            'first_name' => [],
+            'last_name' => [],
             'email' => [
-                'required',
                 'email',
                 function (string $attribute, string $value, callable $fail) {
                     $emailExist = Guest::query()->where('email', strtolower($value))->exists();
@@ -27,8 +26,6 @@ class CreateGuestRequest extends FormRequest
                 }
             ],
             'phone' => [
-                'required',
-                Rule::unique(Guest::class, 'phone'),
                 function (string $attribute, string $value, callable $fail) {
                     $countryPhone = CountryPhoneEnum::fromPhone($value);
 

@@ -18,4 +18,19 @@ final class GuestService
     {
         return new Guest(Arr::only($data, Guest::FILLABLE));
     }
+
+    public function findById(int $id): Guest
+    {
+        return Guest::query()->where('id', $id)->first();
+    }
+
+    public function update(Guest $guest, int $id): void
+    {
+        Guest::query()->where('id', $id)->update($guest->toArray());
+    }
+
+    public function delete(int $id): void
+    {
+        Guest::query()->where('id', $id)->delete();
+    }
 }
