@@ -4,7 +4,8 @@ namespace App\Http\ApiV1\Requests;
 
 use App\Enums\CountryEnum;
 use App\Enums\CountryPhoneEnum;
-use App\Models\Guest;
+use App\Rules\Email;
+use App\Rules\Phone;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\Rule;
 
@@ -12,37 +13,30 @@ class UpdateGuestRequest extends FormRequest
 {
     public function rules(): array
     {
-        /**
-         * toDo
-         *  [] добавить кастомные валидаторы для телефона и для почты
-         */
+        $countryInBody = !is_null($this->request->get('country'));
+
         return [
-            'first_name' => [],
-            'last_name' => [],
-            'email' => [
-                'email',
-                function (string $attribute, string $value, callable $fail) {
-                    $emailExist = Guest::query()->where('email', strtolower($value))->exists();
-
-                    if ($emailExist) {
-                        $fail('This email is already exist');
-                    }
-                }
-            ],
-            'phone' => [
-                function (string $attribute, string $value, callable $fail) {
-                    $countryPhone = CountryPhoneEnum::fromPhone($value);
-
-                    if (is_null($countryPhone)) {
-                        return $fail('incorrect phone number');
-                    }
-
-                    if (!preg_match($countryPhone->getRegEx(), $value)) {
-                        return $fail('incorrect phone number');
-                    }
-                }
-            ],
+            'first_name' => ['nullable'],
+            'last_name' => ['nullable'],
+            'email' => ['nullable', 'email', new Email()],
+            'phone' => [Rule::RequiredIf($countryInBody), new Phone()],
             'country' => ['nullable', Rule::enum(CountryEnum::class)],
         ];
+    }
+
+    #[Override]
+    public function validated($key = null, $default = null): array
+    {
+        $body = parent::validated();
+
+        $phoneCountry = isset($body['phone'])
+            ? CountryPhoneEnum::fromPhone($body['phone'])->getCode()->value
+            : '';
+
+        if (isset($body['country']) && $phoneCountry !== $body['country']) {
+            $body['country'] = $phoneCountry;
+        }
+
+        return $body;
     }
 }
