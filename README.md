@@ -114,13 +114,13 @@ php artisan key:generate
 
 Тело запроса
 
-| Параметр   | Обязателен | Перечисление   |
-|------------|------------|----------------|
-| first_name | нет        | -              |
-| last_name  | нет        | -              |
-| email      | нет        | -              |
-| phone      | нет        | -              |
-| country    | нет        | ru, usa, uk    |
+| Параметр   | Обязателен                   | Перечисление   |
+|------------|------------------------------|----------------|
+| first_name | нет                          | -              |
+| last_name  | нет                          | -              |
+| email      | нет                          | -              |
+| phone      | да, если в теле есть country | -              |
+| country    | нет                          | ru, usa, uk    |
 
 Пример
 
@@ -129,7 +129,8 @@ php artisan key:generate
     "first_name": "firstName",
     "last_name": "lastName",
     "email": "example@gmail.com",
-    "phone": "+442012345678"
+    "phone": "+442012345678",
+    "country": "uk"
 }
 ```
 
@@ -147,6 +148,18 @@ php artisan key:generate
         "created_at": "2024-09-27T20:34:07.000000Z",
         "updated_at": "2024-09-27T20:34:07.000000Z"
     }
+}
+```
+
+### DELETE api/v1/guest/{id}
+
+Параметр id это идентификатор записи из таблицы guests
+
+Ответ
+
+```sh
+{
+    "data": null
 }
 ```
 
