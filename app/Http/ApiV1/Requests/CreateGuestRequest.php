@@ -13,8 +13,6 @@ use Override;
 
 class CreateGuestRequest extends FormRequest
 {
-    private string $countryCode;
-
     public function rules(): array
     {
         return [
